@@ -1,26 +1,133 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0D0D0D;
+  --foreground: #ECEAE2;
+  --charcoal: #1A1A1A;
+  --cream: #ECEAE2;
+  --gold: #D4AF37;
+  
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-charcoal: var(--charcoal);
+  --color-cream: var(--cream);
+  --color-gold: var(--gold);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+::-webkit-scrollbar-thumb {
+  background: #1C1B17;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A880;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  cursor: none; /* Hide standard system mouse pointer */
+}
+
+/* Touch screen adjustments */
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+a, button, select, input, textarea, [role="button"] {
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  a, button, select, input, textarea, [role="button"] {
+    cursor: auto;
+  }
+}
+
+/* Lenis overrides */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ============================================================
+   KEN BURNS — Cinematic slow zoom + pan on static images
+   Makes hotel images feel alive, like a video loop.
+   Apply .ken-burns to any <img> that should feel premium.
+   ============================================================ */
+@keyframes kenBurnsZoom {
+  0%   { transform: scale(1.0)  translate(0%, 0%); }
+  50%  { transform: scale(1.06) translate(-1.2%, -0.6%); }
+  100% { transform: scale(1.04) translate(0.6%, -1%); }
+}
+
+@keyframes kenBurnsZoomAlt {
+  0%   { transform: scale(1.04) translate(0.8%, 0%); }
+  50%  { transform: scale(1.0)  translate(0%, 0.6%); }
+  100% { transform: scale(1.07) translate(-1%, -0.4%); }
+}
+
+/* Standard Ken Burns — 14s cycle, use on editorial/parallax images */
+.ken-burns {
+  animation: kenBurnsZoom 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Alternate Ken Burns — 10s cycle, slightly different direction */
+.ken-burns-alt {
+  animation: kenBurnsZoomAlt 10s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Fast Ken Burns — 8s cycle for room fullscreen images */
+.ken-burns-room {
+  animation: kenBurnsZoom 8s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* ============================================================
+   HORIZONTAL SCROLL SECTION — uses overflow:clip instead of 
+   overflow:hidden so GSAP can freely translate the inner strip
+   without clipping blocking the cards.
+   ============================================================ */
+.h-scroll-section {
+  overflow: clip;
+  overflow-clip-margin: content-box;
 }
